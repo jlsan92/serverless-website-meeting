@@ -3,7 +3,7 @@
 set -o errexit
 set -o pipefail
 
-AWS_PROFILE=${AWS_PROFILE:-"playground"}
+AWS_PROFILE=${AWS_PROFILE:-"serverless"}
 
 echo "Deploying to production!"
 

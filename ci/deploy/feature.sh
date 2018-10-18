@@ -3,7 +3,7 @@
 set -o errexit
 set -o pipefail
 
-AWS_PROFILE=${AWS_PROFILE:-"serverless-meeting"}
+AWS_PROFILE=${AWS_PROFILE:-"serverless"}
 CURRENT_BRANCH=${TRAVIS_BRANCH:-"$(git symbolic-ref --short HEAD)"}
 
 [ ${CURRENT_BRANCH} != "master" ] || { echo "Not a feature branch. Čus! 👋"; exit 0; }
