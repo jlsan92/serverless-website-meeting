@@ -1,0 +1,54 @@
+sudo: required
+dist: trusty
+
+language: node_js
+node_js:
+  - 8
+
+branches:
+  only:
+    - master
+
+services:
+  - docker
+
+cache:
+  directories:
+    - node_modules
+
+before_install: 
+  - ./ci/install/before-install.sh
+
+install:
+  - npm install
+
+before_script:
+  - docker ps
+
+script:
+  - echo testing harder!!!🔥
+
+after_success:
+  - echo uploading some code coverage 🤓
+  - ./ci/build.sh
+  - ./ci/deploy/feature.sh
+
+env:
+  global:
+    - NODE_ENV=test
+    - PRODUCTION_BUCKET=serverless.strv.com
+    - FEATURES_BUCKET=serverless-features.strv.com
+    - FEATURES_HOSTNAME=${FEATURES_BUCKET}.s3-website-us-east-1.amazonaws.com
+    - CLOUDFRONT_DISTRO=EDUY3HHTH9D7L
+
+    # AWS_CREDENTIALS_FILE
+    - secure: nYs0hBWkygsk4DRjlF9s54FP2Y5nyQxt2jiOQGdeEh70JKY6P6Ni6Zhms3sWf5cHfFo9kMZb+DkJSyfhv+k+d6UilPy4aG+3tyJN5t2M2swEYguGaN5YCtW0tbXcIaeNJ76veA7Pau1aX31Ny78NwjRhjkyS2M8MzXa1ShyTPBihiKRlCbmCSPKEPeyFomptDCEOJeg0lzBS3vWC6uyc+I8gvDRfIrDoFIjvK6tFbmZWTbAoilEQg4Kxa9LzShF0vfLBExYXgnMTx0/2VMTOl7qddys2JEBMoArStNAuDYOJHhajbg8fTXQZlB089nKKDZZTtE1bwShTYsSrS/vxGZkNWLAidYKvAX4hJgKnUEdZXoP1fRfn8rDZU6LNB/SUocr+w95PjpF4aUrS/gQSafYvbklZAN8wzT4rbbwd5yecBooxzxOfbhrE07+U5oX8CWO6mv/gnwJZaFspUYtFU/L2933EQH3FyCLzCW75P0ubRqByb0ajc+S4ZhKScEynpIPvnlSLPbLEoPtkF6WJt8m7EJUIsXgIKIJrfPJdo+mE3/hsdHBr1xMhMSi5YFOI31HBMIwgdadnobzAjg7Aih2Xjn14iXfloU9auqXNGOlyAhl1QX73yWJir0qnryebMUZq7Q8xz7RxYyREXJAASiefeUpLa3hKqKar+j4xNmA=
+
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script: ./ci/deploy/production.sh
+    on:
+      branch:
+        - master
+      repo: jlsan92/serverless-website-meeting
