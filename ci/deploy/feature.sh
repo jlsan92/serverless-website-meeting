@@ -4,11 +4,10 @@ set -o errexit
 set -o pipefail
 
 AWS_PROFILE=${AWS_PROFILE:-"serverless"}
-CURRENT_BRANCH=${TRAVIS_BRANCH:-"$(git symbolic-ref --short HEAD)"}
 
-[ ${CURRENT_BRANCH} != "master" ] || { echo "Not a feature branch. Čus! 👋"; exit 0; }
+[ ${TRAVIS_PULL_REQUEST} ] || { echo "Not a feature branch. Čus! 👋"; exit 0; }
 
-echo "Deploying ${CURRENT_BRANCH}"
+echo "Deploying ${TRAVIS_PULL_REQUEST_BRANCH} ⬆️"
 
 docker run \
   --rm \
@@ -16,4 +15,4 @@ docker run \
   --volume "$(pwd):/project" \
   --env AWS_PROFILE="${AWS_PROFILE}" \
   mesosphere/aws-cli \
-  s3 sync --delete ./build "s3://serverless-features.strv.com/${CURRENT_BRANCH}/"
+  s3 sync --delete ./build "s3://serverless-features.strv.com/${TRAVIS_PULL_REQUEST_BRANCH}/"
