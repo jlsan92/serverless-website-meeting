@@ -26,13 +26,13 @@ install:
 
 before_script:
   - docker ps
+  - "./ci/build.sh"
 
 script:
   - "echo testing harder!!! 🔥"
 
 after_success:
   - "echo uploading some code coverage 🤓"
-  - "./ci/build.sh"
   - "./ci/deploy/feature.sh"
 
 env:
@@ -41,7 +41,7 @@ env:
     - AWS_PROFILE=serverless
     - PRODUCTION_BUCKET=serverless.strv.com
     - FEATURES_BUCKET=serverless-features.strv.com
-    - FEATURES_HOSTNAME=${FEATURES_BUCKET}.s3-website-us-east-1.amazonaws.com
+    - FEATURES_HOSTNAME=http://${FEATURES_BUCKET}.s3-website-us-east-1.amazonaws.com
     - CLOUDFRONT_DISTRO=EDUY3HHTH9D7L
     - AWS_DEFAULT_REGION=us-east-1
 
