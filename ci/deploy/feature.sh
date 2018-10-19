@@ -5,7 +5,7 @@ set -o pipefail
 
 AWS_PROFILE=${AWS_PROFILE:-"serverless"}
 
-[ ${TRAVIS_PULL_REQUEST} ] || { echo "Not a feature branch. Čus! 👋"; exit 0; }
+[[ ! -z ${TRAVIS_PULL_REQUEST_BRANCH} ]] || { echo "Not a feature branch. Čus! 👋"; exit 0; }
 
 echo "Deploying ${TRAVIS_PULL_REQUEST_BRANCH} ⬆️"
 
